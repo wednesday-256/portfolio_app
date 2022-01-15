@@ -1,0 +1,40 @@
+extends layout
+
+
+block content
+  div.container(style='flex-direction:column; max-width:80%; margin:auto; margin-top: 20px;')
+    h1(style='text-align:center;text-transform:capitalize;color:#8fbcbb;') #{player.user_name}'s Profile Page
+    h2 #[strong(style={color:'#81a1c1'}) 👤 Username: ]  #{player.user_name}
+    
+    div
+      h3 #[strong(style={color:'#81a1c1'}) 📅 Date Added: ] #[em(style={textAlign:'center'}) #{player.date_added.toLocaleString()}]
+      if player.user_name == 'anon'
+        - let date = new Date(Date.parse(player.date_added) + 31557600000)
+        h3 #[strong(style={color:'#81a1c1'}) 📆 Delete Date : ] #[em(style={textAlign:'center'}) #{date.toLocaleString()}]
+        p #[strong(style={color:'#bf616a',margin:'auto'}) 📍 Note: ] #[em Anonymous accounts will be deleted after a year of opening to keep your account update it.]
+
+    if change
+      div 
+        br
+        h2 #[strong(style={color:'#81a1c1'}) 🔐 Recovery Key: ] #[#rec_key(style='padding:7px; display:inline; width:50%; background-color:#a3be8c;color:#434c5e; border-radius:10px;' title='Click to Copy') #{player.rec_key} ]
+        strong: em#resp
+        p(style={textAlign:'center'}) #[strong(style={color:'#bf616a'}) 📍 Note: ] Recovery key can be used to change password please copy to a safe place
+
+      br
+      div(style='display:flex; justify-content:space-around;width:50%;margin:auto;')
+        a(href=player.url +'/update') &#128504 &#128504 Update
+        a(href= player.url+'/delete') 🗑 Delete Account
+  
+  script.
+    let box = document.querySelector('#rec_key')
+    if (box ){
+      box.addEventListener('click', (e)=>{
+    const show_error=( msg )=>{
+      let box = document.querySelector('#resp')
+      box.innerText = msg  
+      setTimeout(()=>{ box.innerHTML= ''; }, 3000)
+    }
+    navigator.clipboard.writeText(e.target.innerText).catch(e =>show_error(e))
+    show_error('Copied!')
+    })
+      }

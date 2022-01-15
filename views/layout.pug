@@ -1,0 +1,88 @@
+doctype html
+html(lang='en')
+  head
+    meta(name='viewport' content="width=device-width, initial-scale=1")
+    meta(name='title' content='Snow Globe')
+    
+    meta(name='description' content='We offer Board Games as a free service. e.g Checkers, Tic Tac Toe, Color Game.')
+    meta(name='keywords' content='tic tac toe, board, games, checkers, color, game, multiplayer, single player, link, code')
+    meta(name='robots' content='index,follow')
+    meta(http-equiv='Content-Type' content='text/html;charset=utf-8')
+    meta(name='language' content='English')
+    meta(name='revisit-after' content="9days")
+    meta(name='author' content='Felix Wednesday')
+    title= 'Snow Globe - ' + title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='apple-touch-icon' sizes='180x180' href='/images/apple-touch-icon.png')
+    link(rel='icon' sizes='32x32' type="image/png" href='/images/favicon-32x32.png')
+    link(rel='icon' sizes='16x16'  type="image/png" href='/images/favicon-16x16.png')
+    link(rel="manifest" href="/images/site.webmanifest")
+    if user 
+      
+    else 
+        script(src='/javascripts/login.js' defer='true' )
+  body
+    div(style='z-index:99;text-align:right;transform:scale(.9); position: sticky;top: 15px; margin-bottom:5px;')
+      
+      if user
+        p
+          a(href='/' )  ⌂ Home
+          a(href=user.url) 👤 #{user.name}
+          a(href='/profile/logout') 📤 Logout
+      else
+        p
+          a(href='/') ⌂ Home
+          a#logbtn 🔐 Login 
+          a#regbtn 🔏 SignUp
+    div#regbox
+      form(action='/profile/create' method='post' )
+        h1 🔏 SignUp
+        input(type='text' name='username' required='true' placeholder='Enter Username' value=creds == undefined? "": creds.username)
+        br
+        br
+        input(type='password' name='pass'  min='8' required='true' placeholder='Enter New Password' value=creds == undefined? "": creds.pass)
+        br
+        br
+        input(type='password' name='con_pass' min='8' required='true' placeholder='Confirm New Password' value=creds == undefined? "": creds.con_pass)
+        br
+        br
+        input(type='submit' value='🗸🗸 SignUp')
+    div#logbox
+      form(action='/profile/signin' method='post')
+        h1 🔐 Login
+        input(type='text' name='username' required='true' placeholder='Enter Username' value=creds == undefined? "": creds.username)
+        br
+        br
+        input(type='password' name='pass' min='8' required='true' placeholder='Enter Password' value=creds == undefined? "": creds.pass)
+        br
+        br
+        input(type='submit' value='🗸🗸 SignIn')
+        a#recbtn ⮈ Recover
+    div#recbox
+      form(action='/profile/recover' method='post')
+        h1 ⮈ Recover 
+        input(type='text' name='username' required='true' placeholder='Enter Username' value=creds == undefined? "": creds.username)
+        br
+        br
+        input(type='password' name='code'  min='8' required='true' placeholder='Enter Recovery Code' value=creds == undefined? "": creds.code)
+        br
+        br
+        input(type='password' name='pass'  min='8' required='true' placeholder='Enter New Password' value=creds == undefined? "": creds.pass)
+        br
+        br
+        input(type='password' name='con_pass' min='8' required='true' placeholder='Confirm New Password' value=creds == undefined? "": creds.con_pass)
+        br
+        br
+        input(type='submit' value='🗸🗸 Recover')
+    if  errors
+      ul#error_box(style='animation-name:slide;animation-duration:2s;')
+        each error in errors
+          li #[strong 🛑 #{error.msg}]
+    else 
+      ul#error_box(style='animation-name:slide;animation-duration:2s;')
+        
+    div#link_box
+
+
+
+    block content

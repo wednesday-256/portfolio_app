@@ -1,0 +1,17 @@
+extends layout
+
+block content
+
+  div.container(style='flex-direction:column; max-width:60%; margin:40px auto; padding:25px;')
+      h1(style='text-align:center;') Update #{player.user_name}'s Profile
+      form(action=player.url + '/update' method='post' style='margin:auto' )
+        input(type='text' name='username'  placeholder='Change Username' value=creds == undefined? "": creds.username)
+        br
+        br
+        input(type='password' name='pass'  min='8'  placeholder='Change Password' value=creds == undefined? "": creds.pass)
+        br
+        br
+        input(type='password' name='con_pass' min='8'  placeholder='Confirm New Password' value=creds == undefined? "": creds.con_pass)
+        br
+        br
+        input(type='submit' value='🗸🗸 Update')

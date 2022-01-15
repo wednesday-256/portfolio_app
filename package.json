@@ -1,0 +1,34 @@
+{
+  "name": "game-app",
+  "version": "0.0.0",
+  "private": true,
+  "engines": {
+    "node": "12.x"
+  },
+  "scripts": {
+    "start": "node ./bin/www",
+    "devstart": "nodemon ./bin/www",
+    "serverstart": "DEBUG=game-app:* npm run devstart",
+    "test-init": "./node_modules/jasmine/bin/jasmine.js init",
+    "test": "./node_modules/jasmine/bin/jasmine.js"
+  },
+  "dependencies": {
+    "async": "^3.2.2",
+    "compression": "^1.7.4",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "express-validator": "^6.14.0",
+    "http-errors": "~1.6.3",
+    "mongoose": "^6.1.4",
+    "morgan": "~1.9.1",
+    "pug": "^3.0.2"
+  },
+  "devDependencies": {
+    "async": "^3.2.2",
+    "compression": "^1.7.4",
+    "express-validator": "^6.14.0",
+    "jasmine": "^3.10.0",
+    "nodemon": "^2.0.15"
+  }
+}
