@@ -18,6 +18,7 @@ class CGame{
 	expected_pieces = [
 		[5,0], [5,2], [5,4], [5,6]
 	]
+	all_expected={} 
 	kill_points = []
 	present_turn = 1
 	winner = 0
@@ -48,6 +49,14 @@ class CGame{
 			this.create_board()
 			this.create_players()
 		}
+		this.update_all_expected()
+	}
+	
+	update_all_expected(){
+		this.all_expected= {}
+		this.expected_pieces.forEach((arr)=>{
+			this.all_expected[arr] = this.get_nextpoints(arr)
+		})  
 	}
 
 	data_p( val ){
@@ -282,6 +291,7 @@ class CGame{
 		this.present_turn = piece.clr ==1 ?  2 : 1
 		this.first_move ? this.first_move =false : null
 		this.update_expected()
+		this.update_all_expected()
 		this.check_winner()
 		return [0, 'Move Made']
 	}
