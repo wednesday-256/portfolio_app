@@ -219,6 +219,7 @@ class View extends Game{
 			View.njoin = false;
 			if(resp.finished == false){
 				View.update_pieces(resp.board)
+				View.all_expected = resp.board.all_expected
 				View.update_expected_events(resp.board.expected_pieces)
 			} else {
 				View.update_score(resp.board.player1_score, resp.board.player2_score)
@@ -416,6 +417,7 @@ class View extends Game{
 
 	static async turn_handler(data){
 		View.resp = data
+		View.all_expected = data.board.all_expected
 		if(data.finished){
 			const play_sound= (a)=>{
 				a='#'+ a
@@ -480,6 +482,38 @@ class View extends Game{
 			values: View.active_element 
 		} 
 		View.cursor_wait(true)
+		const points_handler = ( points )=>{
+			let cont = []
+			points.forEach((p)=>{
+				let box = document.querySelector(`#cbox${p[0]}${p[1]}`)
+				box.style.backgroundColor = "#8fbcbb";
+				box.addEventListener('click', View.move_event)
+				cont.push(box)
+			})
+			View.cont = cont
+			const timber = ()=>{
+				document.onclick = (e)=>{
+					if(!View.cont.includes(e.target)){
+						points.forEach((val)=>{
+							let box= document.querySelector(`#cbox${val[0]}${val[1]}`)
+							box.style.backgroundColor = "#2e3440";
+							box.removeEventListener('click', View.move_event)
+						})
+						e.target.click()
+						document.onclick = ''
+					}
+				}
+			}
+			setTimeout(timber, 200)
+		}
+
+		let points = View.all_expected[View.active_element]
+		if (points !== undefined ){
+			points_handler(points)
+			View.cursor_wait(false)
+			return
+		}
+
 		fetch(api_add, get_options(body)).then(rep=>rep.json()).then(resp =>{
 			const play_sound= (a)=>{
 				a='#'+ a
@@ -503,28 +537,7 @@ class View extends Game{
 				}
 			} else {
 				if (resp.valid){
-					let cont = []
-					resp.points.forEach((p)=>{
-						let box = document.querySelector(`#cbox${p[0]}${p[1]}`)
-						box.style.backgroundColor = "#8fbcbb";
-						box.addEventListener('click', View.move_event)
-						cont.push(box)
-					})
-					View.cont = cont
-					const timber = ()=>{
-						document.onclick = (e)=>{
-							if(!View.cont.includes(e.target)){
-								resp.points.forEach((val)=>{
-									let box= document.querySelector(`#cbox${val[0]}${val[1]}`)
-									box.style.backgroundColor = "#2e3440";
-									box.removeEventListener('click', View.move_event)
-								})
-								e.target.click()
-								document.onclick = ''
-							}
-						}
-					}
-					setTimeout(timber, 500)
+					points_handler(resp.points)
 				} 
 			}
 			View.cursor_wait(false)
@@ -590,6 +603,7 @@ class View extends Game{
 			.then(resp=>resp.json())
 			.then(resp =>{
 				View.resp = resp;
+				View.all_expected = resp.board.all_expected
 				View.move_handler(resp) 
 				View.cursor_wait(false)
 			}).catch( e => {
