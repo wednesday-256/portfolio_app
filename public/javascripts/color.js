@@ -165,10 +165,32 @@ const turn_toggle= ()=>{
    document.querySelector("#alert-box h3").innerText = " 🔴 🔴 Waiting. 🔴 🔴"
 }
     
+const update_menu = async () =>{
+  document.querySelector('#menu_btn').addEventListener('click', (e)=>{
+    e.preventDefault()
+    let c_box  = document.querySelector('#controls-box').style.display
+    if (c_box != 'flex'){
+      document.querySelector('#controls-box').style.display = 'flex';
+      setTimeout(()=>document.querySelector('#restart').scrollIntoView(), 1700)
+      document.querySelector('#menu_btn').innerText = '⛒  Close'
+    } else {
+      document.querySelector('#controls-box').style.display = 'none';
+      document.querySelector('#menu_btn').innerText = '☰ Menu'
+    }
+  })
+  window.addEventListener('resize', (e)=>{
+    if (innerWidth > 740){
+      document.querySelector('#controls-box').style.display = 'flex';
+    }else {
+      document.querySelector('#controls-box').style.display = 'none';
+      document.querySelector('#menu_btn').innerText = '☰ Menu'
+    }
+  })
+}
 
 // function to initialize color game 
 const init_game= ()=>{
-
+  update_menu()
   get_color()
   scores = "<p><strong>Score: </strong>"+ localStorage.sco +"</p>"  
   document.querySelector('#score-box').innerHTML = scores;

@@ -392,8 +392,9 @@ class CEngine{
 	//function to get next checkers move
 	get_next_move(board, player, depth, alpha, beta){
 		//console.log('whithin get next method')
-		board.expected_pieces.length <= 3 && depth >=3 && depth==undefined? depth=6 : null  
 		depth == undefined? depth = 5: null
+		board.expected_pieces.length <= 3 && depth==undefined? depth=6 : null  
+		board.expected_pieces.length <= 2 && depth==undefined? depth=7 : null  
 		if ( alpha == undefined && beta == undefined ){
 			alpha = -Infinity; beta = +Infinity;
 		}

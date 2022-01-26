@@ -3,7 +3,7 @@ const show_error=(msgs, show)=>{
   let res = ''
 	let rm_event = "onclick='this.style.display=`none`'"
   if(msgs instanceof Array){
-    msgs.map((val)=>{ res += "<li " + rm_event + " >&#128712  "+ val+ "</li>"  })
+		msgs.map((val)=>{ res += "<strong><li " + rm_event + " >&#128712  "+ val+ "</li></strong>"  })
   }else { res =`<li ${rm_event} >&#128712  ${msgs}</li>` }
   error_box.innerHTML += res
   !show? setTimeout(()=>{ error_box.innerHTML= '' }, 10000): null
@@ -101,7 +101,32 @@ class View extends Game{
 		let brd = Game.get_board()
 		brd.classList.add('chk-board')
 		brd.innerHTML = View.create_cboard();
+		View.update_menu()
 		View.init_game()
+		
+	}
+
+	static async update_menu(){
+		document.querySelector('#menu_btn').addEventListener('click', (e)=>{
+			e.preventDefault()
+			let c_box  = document.querySelector('#controls-box').style.display
+			if (c_box != 'flex'){
+				document.querySelector('#controls-box').style.display = 'flex';
+				setTimeout(()=>document.querySelector('#restart').scrollIntoView(), 1700)
+				document.querySelector('#menu_btn').innerText = '⛒  Close'
+			} else {
+				document.querySelector('#controls-box').style.display = 'none';
+				document.querySelector('#menu_btn').innerText = '☰ Menu'
+			}
+		})
+		window.addEventListener('resize', (e)=>{
+			if (innerWidth > 740){
+				document.querySelector('#controls-box').style.display = 'flex';
+			}else {
+				document.querySelector('#controls-box').style.display = 'none';
+				document.querySelector('#menu_btn').innerText = '☰ Menu'
+			}
+		})
 	}
 
 	static async rotate_board(e){
@@ -499,12 +524,12 @@ class View extends Game{
 							box.style.backgroundColor = "#2e3440";
 							box.removeEventListener('click', View.move_event)
 						})
-						e.target.click()
 						document.onclick = ''
+						e.target.click()
 					}
 				}
 			}
-			setTimeout(timber, 200)
+			setTimeout(timber, 100)
 		}
 
 		let points = View.all_expected[View.active_element]
@@ -566,7 +591,10 @@ class View extends Game{
 		View.update_pieces(
 			View.moves[ View.moves.length - View.current_move]
 		)
+		if (View.alert_on == true){ return }
 		View.update_alert_box(' REPLAY MODE ',22)
+		View.alert_on = true
+
 		
 	}
 	static front_event_handler(e){
@@ -579,12 +607,16 @@ class View extends Game{
 		if (View.current_move <= 0){
 			View.resp ? View.move_handler(View.resp): View.start_handler(View.start)
 			View.update_alert_box(" GAME MODE ",2 )
+			View.current_move = 0;
+			View.alert_on = false;
 			return
 		}
 		View.update_pieces(
 			View.moves[View.moves.length - View.current_move]
 		)
+		if (View.alert_on == true){ return }
 		View.update_alert_box(' REPLAY MODE ',22)
+		View.alert_on = true
 	}
 
 	static move_event(e){

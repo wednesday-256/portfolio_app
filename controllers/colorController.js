@@ -7,44 +7,37 @@ const Request = require('../models/request')
 
 
 exports.color_list = (req, res, next)=>{
-  //Game.deleteMany({game_type: 'color', join_code: '6335e5' }).exec(res.redirect('/'))
-  const handle_find = (err, results)=>{
-    if (err){return next(err)}
-    let context ={title: 'Color Games'}
-    if (req.user){
-      const handle_user = (err, the_user)=>{
-        if (err){ return next(err) }
-
-        if( the_user != null ){
-          context['user'] = { name: the_user.user_name, url: the_user.url }
-        }
-
-        if (results == null){
-          res.render('color_list',context )
-        } else {
-          let games  = []
-          results.forEach((obj)=>{
-            if (obj.player1 == null){
-              Game.findByIdAndRemove(obj._id)
-              return
-            }
-            if (obj.player1.cookie == req.user || (obj.player2 && obj.player2.cookie == req.user)){
-              games.push(obj)
-            }
-          })
-
-          context['games'] = games  
-          res.render('color_list', context)
-          return 
-        }
-      }
-
-      Player.findOne({'cookie': req.user}).exec(handle_user)
-    } else {
-      res.render('color_list', context)
-    }
+  let context = {title: 'Color Game.'}
+  if (!req.user){
+    res.render('color_list', context)
+    return
   }
-  Game.find({'game_type': 'color'}).sort({'date_played': -1}).populate('player1').populate('player2').exec(handle_find)
+
+  Player.findOne({'cookie':req.user}).exec((err, player)=>{
+    if(err){return next(err)};
+    if(player == null){
+      res.clearCookie('AuthToken')
+      context['errors'] = [{msg:'Invalid User.'}]
+      res.render('color_list', context)
+      return
+    }
+    Game.find({$and:[ 
+      {$or:[ {'player1': player._id}, {'player2': player._id} ]},
+      {game_type:'color'}
+    ]})
+      .populate('player1')
+      .populate('player2')
+      .exec((err, games)=>{
+      if(err){ return next(err)};
+      if (games == null){
+        return res.render('color_list', context)
+      }
+      context['games'] = games
+      console.log(player.user_name)
+      context.user = {name:player.user_name, url:player.url}
+      return res.render('color_list', context)
+    })
+  })
 }
 
 exports.color_details = (req, res, next)=>{

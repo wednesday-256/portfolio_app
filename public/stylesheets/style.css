@@ -1,30 +1,36 @@
 body {
+	height: 100%;
+	width: 100%;
 	position:relative;
 	margin: 0px;
 	background-color: #2e3440;
-	color: #ECEFF4;
+	color:#88c0d0 ; /** #ECEFF4; **/
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 	line-height: 1.3;
 	scroll-behavior: smooth;
 }
 .container {
 	display: flex;
-	border: 3px inset  #5e81ac;
-	border-radius: 10px;
-	padding: 20px;
+	box-shadow:2px 3px 10px 0px #5e81ac;
+	border-radius: 20px;
+	padding: 15px;
 	padding-top:0px;
 	min-width: 20%;
 	animation-name: slide;
 	animation-duration: 1s;
-	transition: border-color 2s ease;
+	transition: box-shadow 1.5s ease;
+	margin-top: 10px;
 }
 .container:hover {
-	border-color: #8fbcbb;
+	box-shadow:2px 3px 10px 2px #8fbcbb;
 }
 #link_box div{
 	width:100%;
 	word-break: break-word;
 	text-align:center;
+}
+#menu_btn{
+	display: none;
 }
 #link_box div a {
 	max-width:max-content;
@@ -33,6 +39,7 @@ body {
 	width: 20%;
 	padding-top: 30px;
 	min-width: 250px;
+	margin-right: 20px
 }
 #controls-box, #score-box, #savebox{
 	display: flex;
@@ -49,9 +56,10 @@ body {
 #controls-box, #savebox, #req_box{
 	padding: 10px;
 	margin: 0px 10px; 
-	border: 4px inset  #5e81ac;
+	box-shadow:2px 3px 10px 0px #5e81ac;
 	border-radius: 10px;
 }
+
 #req_box{
 	position:absolute;
 	display:flex;
@@ -78,9 +86,31 @@ body {
 	font-size: 18px; 
 	text-transform: uppercase;
 	padding: 5px 16px;
-	border: 5px inset  #5e81ac;
-	
+	box-shadow:2px 3px 10px 0px #5e81ac;
 }
+#vid_box {
+	/**box-shadow:2px 10px 15px 2px #5e81ac;**/
+	border-radius: 20px;
+	border: 0px;
+	margin:auto;
+	width:90%;
+	display:none;
+	margin-bottom: 25px;
+	margin-top: 30px;
+	padding: 9px;
+}
+.zm_class {
+	animation-name:globe;
+	animation-duration: 2s;
+	animation-iteration-count: infinite;
+}
+
+@keyframes globe {
+	0%{
+		transform:translateX(20px);
+	}
+}
+
 #save_game{
 	margin-bottom: 15px;
 }
@@ -105,25 +135,31 @@ a,input[type='submit']{
 	text-decoration:none;
 	background-color:	#5e81ac;
 	border-radius: 17px;
-	color: #fff;
+	color:#d8dee9;/** #eceff4; #2e3440 ;#fff;**/
 	margin: 8px;
-	border: 2px inset #5e81ac;
-	transition: background-color 1.3s ease, transform .9s ease;
+	border:none;
+	transition: color .3s ease, background-color .9s ease, transform .5s ease;
 	cursor:pointer;
+	min-width:max-content;
 }
+input[type='text'], input[type='password']{
+	text-align:center;
+	padding: 7px 0px ;
+	font-size: 15px;
+}
+
 #howtoplay {
 	cursor: help;
 }
 
 li a{
-	padding:4px  9px;
 	margin: 5px;
 	border-radius:15px;
 }
 li{
 	margin-bottom: 10px;
 }
-input[type='text']{
+input[type='text'], input[type='password']{
 	max-width: 90%;
 }
 hr {
@@ -139,6 +175,7 @@ hr {
 
 a:hover , input[type='submit']:hover, input[type='radio']:hover{
 	background-color: #8fbcbb;
+	color: #2e3440;
 	cursor: pointer;
 	transform: scale(1.1)
 }
@@ -151,7 +188,6 @@ ul{
 	text-align: center;
 	margin: 5px 10px;
 	border-radius: 30px;
-	border: 2px inset #5e81ac;
 	line-height: 19px;
 	transition: display ease 2s;
 	background-color: rgba(94, 129, 172, 0.3)
@@ -184,14 +220,14 @@ ul{
 	max-width:500px;
 }
 .color-board{
-	border: 3px inset #5e81ac;
+	box-shadow:2px 3px 10px 0px #5e81ac;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	border-radius: 20px;
 	padding: 10px;
 	flex-wrap:wrap;
-	margin-right: 10px;
+	margin-top: 20px;
 }
 #box {
 	width: 120px;
@@ -219,7 +255,7 @@ ul{
 	font-size: 90px;
 }
 .cbox, .chk-board div{
-	font-size: 40px;
+	font-size: 35px;
 	border: 1px solid #5e81ac;
 	width: 50px;
 	height: 60px;
@@ -242,6 +278,8 @@ ul{
 	border-radius: 15px;
 }
 #game-board{
+	animation-name: slide;
+	animation-duration:2.5s;
 	transition: transform ease-in-out .5s;
 	margin:auto;
 }
@@ -257,18 +295,17 @@ ul{
 		transform: scale(0.4)
 	}
 }
-#controls-box, #score-box, #savebox,{
+#controls-box, #score-box, #savebox{
 	transition: height ease-in 1s;
-	transform: scale(.9)
 	transition: display ease-in 2s;
-	animation-name :side;
+	animation-name: side;
 	animation-duration: 2s;
 	transition: scale ease-in 1.5s;
 }
 #alert-box h3, #alert-box p{
 	font-size: 30px;
 	padding: 15px;
-	border: 3px inset #5e81ac;
+	box-shadow:2px 3px 10px 0px #5e81ac;
 	border-radius: 25px;
 	margin-bottom: 25px;
 }
@@ -280,7 +317,6 @@ ul{
 	transition-property: transform , opacity ,border-bottom-color, border-left-color, border-top-color, border-right-color;
 	transition-duration:.9s;
 	transition-timing-function: ease;
-
 	animation-name : alert;
 	animation-duration: 1s;
 	font-size:30px;
@@ -288,19 +324,10 @@ ul{
 @keyframes alert{
 	0%{
 		opacity:.6;
-		transform:translateX(-30px)
+		transform:translateX(-20px)
 	}
-	20%{
-		border-bottom-color: #2e3440;;
-	}
-	40%{
-		border-left-color: #2e3440;;
-	}
-	70%{
-		border-top-color: #2e3440;;
-	}
-	80%{
-		border-right-color: #2e3440;;
+	5%{
+		box-shadow: 2px 3px 10px 5px #8fbcbb;
 	}
 }
 
@@ -319,16 +346,24 @@ ul{
 	#alert-box h3, #alert-box p{
 		font-size: 29px;
 	}
+	.cbox, .chk-board div {
+		font-size: 30px;
+	}
 }
 
 	#togglebtn{
 		display: none;
 	}
 	.homebox{
-		justify-content: space-around;
-		align-content: stretch;
+		justify-content: space-between;
+		align-content: center;
 		padding:40px;
-		border:0px;
+		margin-top: 10px;
+		margin-bottom: 10px;
+		box-shadow:none;
+	}
+	.homebox:hover{
+		box-shadow:none;
 	}
 *{
 	transition: display 3s ease-in;
@@ -349,7 +384,7 @@ ul{
 	animation-duration: .7s;
 } 
 #logbox form, #regbox form, #recbox form{
-	border: 3px inset  #5e81ac;
+	box-shadow:2px 3px 10px 0px #5e81ac;
 	text-align:center;
 	border-radius: 10px;
 	padding:30px;
@@ -360,7 +395,7 @@ ul{
 	justify-content:center;
 	text-align:center;
 	align-items:center;
-	max-width:600px;
+	max-width:max-content;
 	padding: 15px;
 	margin: auto;
 	margin-top: 20px;
@@ -457,7 +492,7 @@ ul{
 	transition: content ease 2s;
 	font-size:25px;
 	font-family: sans-serif;
-	background-color: #3b4252;
+	box-shadow:2px 3px 10px 0px #5e81ac;
 	padding:7px 10px;
 	border-radius: 15px;
 	margin-top:29px;
@@ -495,17 +530,21 @@ ul{
 	#game-board{
 		width:100%;
 	}
+	#vid_box{
+		margin-top:10px;
+		width: 90%;
+	}
 	#req_box{
 		top:40px;
 		left:-15px;
 	}
 	#alert-box{
-		transform: scale(1.3)
+		transform: scale(1.3);
 		max-width: 500px;
 	}
 	#link_box{
 		width:90%;
-		transform:scale(.9)
+		transform:scale(.9);
 		font-size:18px;
 	}
 	#link_box p, #link_box a{
@@ -554,7 +593,19 @@ ul{
 		width: 80%;
 	}
 	#side-panel{
-		transform: translateY(-30px);
+		transform: translateY(-70px);
+		margin:auto;
+	}
+	#controls-box{
+		position: absolute;
+		background-color: rgb(46, 52, 64);
+		left:0px;
+		top:40px;
+		display:none;
+		z-index: 99;
+	}
+	#menu_btn{
+		display:block;
 	}
 	#main-section{
 		position:relative;
@@ -562,7 +613,7 @@ ul{
 		display: flex;
 		flex-direction: column;
 		align-items:center;
-		justify-content:center;
+		justify-content:space-between;
 		transform: scale(.9)
 	}
 	.chk-board {

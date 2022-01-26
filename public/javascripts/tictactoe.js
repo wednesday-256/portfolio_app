@@ -55,6 +55,9 @@ class Game{
 		else if ( n == 79 ){
 			fix = '😿 😿'
 		}
+		else if (n == 22){
+			fix = '🛑 🛑'
+		}
 		else {
 			fix = '🎉 🎉'
 		}
@@ -101,6 +104,7 @@ class View extends Game{
 		let brd = Game.get_board()
 		brd.classList.add('ttt-board')
 		brd.innerHTML = res
+		View.update_menu()
 		View.init_game()
 	}
 	static cursor_wait(check){
@@ -108,6 +112,29 @@ class View extends Game{
 		document.querySelector('body').style.cursor = val
 		document.querySelectorAll('.tbox').forEach((box)=>{
 			box.style.cursor= val == 'wait' ? val : 'pointer'
+		})
+	}
+
+	static async update_menu(){
+		document.querySelector('#menu_btn').addEventListener('click', (e)=>{
+			e.preventDefault()
+			let c_box  = document.querySelector('#controls-box').style.display
+			if (c_box != 'flex'){
+				document.querySelector('#controls-box').style.display = 'flex';
+				setTimeout(()=>document.querySelector('#restart').scrollIntoView(), 1700)
+				document.querySelector('#menu_btn').innerText = '⛒  Close'
+			} else {
+				document.querySelector('#controls-box').style.display = 'none';
+				document.querySelector('#menu_btn').innerText = '☰ Menu'
+			}
+		})
+		window.addEventListener('resize', (e)=>{
+			if (innerWidth > 740){
+				document.querySelector('#controls-box').style.display = 'flex';
+			}else {
+				document.querySelector('#controls-box').style.display = 'none';
+				document.querySelector('#menu_btn').innerText = '☰ Menu'
+			}
 		})
 	}
 
@@ -144,6 +171,7 @@ class View extends Game{
 			})
 			data.win_pos.forEach((val)=>{
 				document.querySelector('#tbox'+val).style.backgroundColor ='#a3be8c';
+				document.querySelector('#tbox'+val).style.color ='#2e3440';
 			})
 			data.join_state == 'joined'? View.init_rematch() : null
 		} else if (data.turn){
@@ -230,6 +258,7 @@ class View extends Game{
 						})
 						resp.win_pos.forEach((val)=>{
 							document.querySelector('#tbox'+val).style.backgroundColor ='#a3be8c';
+							document.querySelector('#tbox'+val).style.color ='#2e3440';
 						})
 					}
 				}
@@ -457,6 +486,7 @@ class View extends Game{
 				}else {
 					resp.win_pos.forEach((val)=>{
 						document.querySelector('#tbox'+val).style.backgroundColor ='#a3be8c';
+						document.querySelector('#tbox'+val).style.color ='#2e3440';
 					})
 					resp.win_player ==1 ? View.update_score(1, 0):View.update_score(0, 1) 
 					View.update_alert_box(`${resp.winner} wins!!`, 43)

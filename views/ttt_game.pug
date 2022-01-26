@@ -1,7 +1,7 @@
 extends layout
 
 block content 
-  div.container(style='border:0px; justify-content:space-around')
+  div.container#homebox(style='box-shadow:none;justify-content:space-around;')
     div#side-panel
       div#score-box
         p #[strong Score:] 0
@@ -23,6 +23,7 @@ block content
         input(type='hidden' name='option' value=game.join_state == 'waiting' || game.join_state == 'joined'? 'friend': game.join_state == "engine"? 'computer' : 'oneplayer')
       div#alert-box
       div#game-board
+      a#menu_btn  ☰ Menu
 
   audio(hidden id='snd2' src='/media/test.mp3')
   audio(hidden id='snd1' src='/media/test2.mp3')

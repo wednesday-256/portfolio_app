@@ -14,10 +14,11 @@ const compression = require('compression')
 var app = express();
 
 //secret for signing cookies
-const secret = "your cookie secret here"
+const secret = "your secret here"
 
 var mongoose = require('mongoose');
-var mongoDB = "your mongodb url here" //"mongodb://localhost:27017/gameapp"
+
+var mongoDB = "mongodb://localhost:27017/gameapp2" //<---your mongodb url here
 
 mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true})
 var db = mongoose.connection; 

@@ -55,33 +55,31 @@ exports.checkers_list = (req, res, next)=>{
     res.render('chk_list', context)
     return
   }
-  async.parallel(
-    {
-      player:(callback)=>Player.findOne({'cookie':req.user}).exec(callback),
-      games:(callback)=>Game.find({'game_type': 'checkers'}).sort({'date_played':-1}).populate('player1').populate('player2').exec(callback),
-    },(err, results)=>{
-      if(err){return next(err)}
-      if(results.player == null){
-        res.clearCookie('AuthToken')
-        context['errors'] = [{msg:'Invalid User.'}]
-        res.rend('chk_list', context)
-        return
-      }
-      if(results.games == null){return res.render('chk_list', context)}
-      let games = []
-
-      //fileter games for players games
-      results.games.forEach((game)=>{
-        if(game.player1.cookie == req.user){games.push(game)}
-        if(game.player2){game.player2.cookie== req.user ? games.push(game): null}
-      })
-
-      //update context for views
-      context['games'] = games
-      context.user = {name:results.player.user_name, url:results.player.url}
-      return res.render('chk_list', context)
+  Player.findOne({'cookie':req.user}).exec((err, player)=>{
+    if(err){return next(err)};
+    if(player == null){
+      res.clearCookie('AuthToken')
+      context['errors'] = [{msg:'Invalid User.'}]
+      res.render('chk_list', context)
+      return
     }
-  )
+    Game.find({$and:[ 
+      {$or:[ {'player1': player._id}, {'player2': player._id} ]},
+      {game_type:'checkers'}
+    ]})
+      .populate('player1')
+      .populate('player2')
+      .exec((err, games)=>{
+      if(err){ return next(err)};
+      if (games == null){
+        return res.render('chk_list', context)
+      }
+      context['games'] = games
+      console.log(player.user_name)
+      context.user = {name:player.user_name, url:player.url}
+      return res.render('chk_list', context)
+    })
+  })
 }
 
 exports.checkers_details = (req, res, next)=>{
@@ -490,14 +488,19 @@ exports.checkers_api = [
           break;
         case 'check':
           if(req.user != results.request.sender.cookie){
-            return res.send({state:'error', errors:['Error: '+ err.toString()]})
+            return res.send({
+              state:'error', 
+              errors:['Error: '+ err.toString()]})
           }
-          return res.send({state:'success', url: results.request.accept? results.request.game_url: null})
+          return res.send({
+            state:'success',
+            url: results.request.accept? results.request.game_url: null})
       }
     }
     const handle_list_reqs = (err, g_reqs)=>{
       if(err){ return res.send({state:'error', errors:['Error: '+ err.toString()]}) }
-      if (g_reqs == null){return res.send({state:'error', msg:'No Requests Available.'})}
+      if (g_reqs == null){return res.send({
+        state:'error', msg:'No Requests Available.'})}
       let sent = []
       let received = []
       g_reqs.forEach((g_req)=>{
@@ -521,12 +524,19 @@ exports.checkers_api = [
           received.push(game_request)
         }
       })
-      return res.send({state:'success', msg:{sent: sent, received: received}})
+      return res.send({state:'success', msg:{
+        sent: sent, received: received}})
     }
 
     const handle_create_req = (err, the_game)=>{
-      if(err){ return res.send({state:'error', errors:"Error "+ err.toString()}) }
-      if (the_game == null){ return res.send({state:'error', errors:'Error: Invalid Game Id.'}) }
+      if(err){ return res.send({
+        state:'error', errors:"Error "+ err.toString()}) 
+      }
+
+      if (the_game == null){ return res.send({
+        state:'error', errors:'Error: Invalid Game Id.'}) 
+      }
+
       let sender , receiver;
       if ( the_game.player1.cookie == req.user  ){
         sender =  the_game.player1._id 
@@ -536,11 +546,18 @@ exports.checkers_api = [
         receiver= the_game.player1._id
       }
       let request =  new Request({
-        sender: sender, receiver : receiver, game_type:'checkers'
+        sender: sender,
+        receiver : receiver,
+        game_type:'checkers'
       })
       request.save((err, the_req)=>{
-        if(err){ return res.send({state:'error', errors:'Error: ' + err.toString()}) }
-        return res.send({state:'success', req_id:the_req._id, msg:'ALERT: Request Sent!'})
+        if(err){ return res.send({
+          state:'error', 
+          errors:'Error: ' + err.toString()}) }
+        return res.send({
+          state:'success', 
+          req_id:the_req._id,
+          msg:'ALERT: Request Sent!'})
       })
     }
 

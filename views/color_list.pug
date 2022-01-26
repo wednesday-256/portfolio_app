@@ -12,7 +12,7 @@ block content
         each game in games
           li
             div(style='display:flex; justify-content:space-between; margin:10px;')
-              a(href=game.url title=game.join_code) #[strong Date:] #{game.date_played.toLocaleString()}
+              a(href=game.url title=game.join_code)  #{game.date_played.toLocaleString()}
               a(href=game.player1.url) #{game.player1.user_name}
               if game.winner == game.player1.user_name  && game.player2
                 p #[strong Score:] #{11 - JSON.parse(game.game_state)[1]}

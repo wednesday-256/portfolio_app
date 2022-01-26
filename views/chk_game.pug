@@ -1,11 +1,11 @@
 extends layout
 
 block content 
-  div.container(style='border:0px;')
+  div.container#homebox(style='box-shadow:none;justify-content:space-around')
+
+    div#control2-box
     div#side-panel
       div#score-box
-        p #[strong Score:] 0
-        p #[strong High Score:] 0
       div#controls-box
         a#create_req(style='display:none;') &#128389  Request Rematch
         a#howtoplay &#128712 How to Play
@@ -26,6 +26,7 @@ block content
         br
         div(style={display:'flex',"justify-content":"space-between",'margin':'10px auto;', width:"100%", "max-width":'650px'})
           a#back &#8666 &#8666  
+          a#menu_btn  ☰ Menu
           a#forward &#8667 &#8667
 
 

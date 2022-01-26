@@ -41,40 +41,31 @@ exports.tictactoe_list = (req, res, next)=>{
     res.render('ttt_list', context)
     return 
   }
-  async.parallel(
-    {
-      player:(callback)=>Player.findOne({'cookie':req.user}).exec(callback) ,
-      games:(callback)=>Game.find({'game_type':'tictactoe'}).sort({'date_played':-1}).populate('player2').populate('player1').exec(callback),
-    },(err, results)=>{
-      if(err){ return next(err) }
-      if (results.player == null){
-        res.clearCookie('AuthToken')
-        context['errors'] = [{msg:'Invalid User'}]
-        res.render('ttt_list', context)
-        return
-      }
-      if (results.games == null){
-        res.render('ttt_list', context)
-        return
-      }
-      let games = []
-
-      //filters games for players games
-      results.games.forEach((game)=>{
-        if ( game.player1.cookie == req.user ) { games.push(game) }
-        if (game.player2){ game.player2.cookie == req.user? games.push(game): null }
-      })
-
-      //update context for views 
-      context['games'] = games
-      context['user'] = {
-        name: results.player.user_name, 
-        url: results.player.url
-      }
+  Player.findOne({'cookie':req.user}).exec((err, player)=>{
+    if(err){return next(err)};
+    if(player == null){
+      res.clearCookie('AuthToken')
+      context['errors'] = [{msg:'Invalid User.'}]
       res.render('ttt_list', context)
       return
     }
-  )
+    Game.find({$and:[ 
+      {$or:[ {'player1': player._id}, {'player2': player._id} ]},
+      {game_type:'tictactoe'}
+    ]})
+      .populate('player1')
+      .populate('player2')
+      .exec((err, games)=>{
+      if(err){ return next(err)};
+      if (games == null){
+        return res.render('ttt_list', context)
+      }
+      context['games'] = games
+      console.log(player.user_name)
+      context.user = {name:player.user_name, url:player.url}
+      return res.render('ttt_list', context)
+    })
+  })
 }
 
 exports.tictactoe_details = (req,res, next)=>{
