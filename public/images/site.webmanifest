@@ -1,1 +1,31 @@
-{"name":"Snow Globe","short_name":"SnG","icons":[{"src":"/images/android-chrome-192x192.png","sizes":"192x192","type":"image/png"},{"src":"/images/android-chrome-512x512.png","sizes":"512x512","type":"image/png"}],"theme_color":"#ffffff","background_color":"#ffffff","display":"standalone"}
+{
+  "name": "Snow Globe",
+  "short_name": "SnG",
+  "icons": [
+    {
+      "src": "/images/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#212529",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "files": {
+    "main.css": "/static/css/main.d2348a31.css",
+    "main.js": "/static/js/main.9ee62808.js",
+    "static/js/787.c4e7f8f9.chunk.js": "/static/js/787.c4e7f8f9.chunk.js",
+    "static/media/bootstrap-icons.woff?": "/static/media/bootstrap-icons.c1d7432ee75fa194e499.woff",
+    "static/media/bootstrap-icons.woff2?": "/static/media/bootstrap-icons.a13b815539b49de48d23.woff2",
+    "index.html": "/index.html",
+    "main.d2348a31.css.map": "/static/css/main.d2348a31.css.map",
+    "main.9ee62808.js.map": "/static/js/main.9ee62808.js.map",
+    "787.c4e7f8f9.chunk.js.map": "/static/js/787.c4e7f8f9.chunk.js.map"
+  },
+  "entrypoints": ["static/css/main.d2348a31.css", "static/js/main.9ee62808.js"]
+}
