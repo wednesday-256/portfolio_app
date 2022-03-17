@@ -18,7 +18,7 @@ const secret = "your secret here"
 
 var mongoose = require('mongoose');
 
-var mongoDB = "mongodb://localhost:27017/gameapp2" //<---your mongodb url here
+var mongoDB = "mongodb://localhost:27017/" //<---your mongodb url here
 
 mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true})
 var db = mongoose.connection; 
@@ -47,7 +47,6 @@ app.use((req, res, next)=>{
 app.use(db_clean.clean_up)
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

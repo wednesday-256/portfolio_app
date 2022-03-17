@@ -1,0 +1,38 @@
+body,html{
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+}
+
+.cl_box{
+  min-width: 2.rem;
+  min-height: 5rem;
+  margin: 6rem;
+}
+.cl_box:hover {
+  transform: scale(1.1);
+}
+.t_box {
+  min-width: 2.5rem;
+  max-height: 8rem;
+  min-height: 8rem;
+
+}
+.c_box {
+  min-width: 2.25rem;
+  min-height: 3.4rem;
+}
+.c_piece{
+  min-width:1.8rem;
+}
+.rotate {
+  transition: transform 1s ease-in-out;
+  transform: rotate(180deg);
+}
+.unrotate {
+  transition: transform 1s ease-in-out;
+  transform: rotate(-360deg);
+}
+.head-container {
+  min-height: 125px;
+}
